@@ -20,8 +20,6 @@ Visuellement, ces plateformes comportent généralement :
 
 # Étapes pour réaliser ce projet
 
-Je vais vous proposer une démarche complète pour développer cette plateforme :
-
 ## Étape 1 : Analyse et planification
 
 Commencez par définir précisément ce que votre application doit faire :
