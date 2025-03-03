@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockManager - Tableau de bord</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Inclusion de Chart.js pour les graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="dashboard.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">StockManager</div>
+            <ul>
+                <li><a href="#" class="active">Tableau de bord</a></li>
+                <li><a href="#">Recherche</a></li>
+                <li><a href="#">Transactions</a></li>
+                <li><a href="#">Analyses</a></li>
+                <li><a href="#" class="user-profile">Mon Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="portfolio-summary">
+            <h2>Mon Portefeuille</h2>
+            <div class="portfolio-stats">
+                <div class="stat-card">
+                    <h3>Valeur Totale</h3>
+                    <p class="value">10 245,67 €</p>
+                    <p class="change positive">+2,4% aujourd'hui</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Rendement Total</h3>
+                    <p class="value">+824,30 €</p>
+                    <p class="change positive">+8,7% depuis le début</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Liquidités</h3>
+                    <p class="value">1 234,56 €</p>
+                </div>
+            </div>
+
+            <div class="portfolio-chart">
+                <canvas id="portfolioChart"></canvas>
+            </div>
+        </section>
+
+        <section class="holdings">
+            <h2>Mes Actions</h2>
+            <table class="holdings-table">
+                <thead>
+                    <tr>
+                        <th>Symbole</th>
+                        <th>Nom</th>
+                        <th>Quantité</th>
+                        <th>Prix Moyen</th>
+                        <th>Prix Actuel</th>
+                        <th>Variation (jour)</th>
+                        <th>Valeur</th>
+                        <th>Gain/Perte</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AAPL</td>
+                        <td>Apple Inc.</td>
+                        <td>10</td>
+                        <td>150,25 €</td>
+                        <td>165,30 €</td>
+                        <td class="positive">+1,2%</td>
+                        <td>1 653,00 €</td>
+                        <td class="positive">+150,50 € (+10,0%)</td>
+                        <td>
+                            <button class="btn-buy">Acheter</button>
+                            <button class="btn-sell">Vendre</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>MSFT</td>
+                        <td>Microsoft Corp.</td>
+                        <td>5</td>
+                        <td>280,40 €</td>
+                        <td>290,75 €</td>
+                        <td class="positive">+0,8%</td>
+                        <td>1 453,75 €</td>
+                        <td class="positive">+51,75 € (+3,7%)</td>
+                        <td>
+                            <button class="btn-buy">Acheter</button>
+                            <button class="btn-sell">Vendre</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>TSLA</td>
+                        <td>Tesla Inc.</td>
+                        <td>3</td>
+                        <td>900,10 €</td>
+                        <td>820,50 €</td>
+                        <td class="negative">-2,1%</td>
+                        <td>2 461,50 €</td>
+                        <td class="negative">-238,80 € (-8,8%)</td>
+                        <td>
+                            <button class="btn-buy">Acheter</button>
+                            <button class="btn-sell">Vendre</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="market-overview">
+            <h2>Aperçu du Marché</h2>
+            <div class="index-cards">
+                <div class="index-card">
+                    <h3>CAC 40</h3>
+                    <p class="value">7 245,34</p>
+                    <p class="change positive">+0,5%</p>
+                </div>
+                <div class="index-card">
+                    <h3>S&P 500</h3>
+                    <p class="value">4 532,76</p>
+                    <p class="change positive">+0,3%</p>
+                </div>
+                <div class="index-card">
+                    <h3>NASDAQ</h3>
+                    <p class="value">14 893,45</p>
+                    <p class="change negative">-0,2%</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 StockManager - Projet Académique</p>
+        <p>Les données sont simulées et ne représentent pas des valeurs réelles du marché</p>
+    </footer>
+    <script>
+        // Données pour le graphique d'évolution du portefeuille
+        const portfolioData = {
+            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'],
+            datasets: [{
+                label: 'Valeur du portefeuille (€)',
+                data: [8500, 8700, 9200, 9100, 9600, 9800, 10245.67],
+                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                borderColor: 'rgba(52, 152, 219, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(52, 152, 219, 1)',
+                pointRadius: 4,
+                tension: 0.2 // Pour avoir des courbes plus douces
+            }]
+        };
+
+        // Configuration du graphique
+        const portfolioChartConfig = {
+            type: 'line',
+            data: portfolioData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('fr-FR', { 
+                                        style: 'currency', 
+                                        currency: 'EUR' 
+                                    }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('fr-FR', { 
+                                    style: 'currency', 
+                                    currency: 'EUR',
+                                    maximumFractionDigits: 0
+                                }).format(value);
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Initialiser le graphique lorsque le DOM est chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            new Chart(ctx, portfolioChartConfig);
+        
+            // Ajouter des écouteurs d'événements pour les boutons
+            document.querySelectorAll('.btn-buy').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const row = e.target.closest('tr');
+                    const symbol = row.cells[0].textContent;
+                    const name = row.cells[1].textContent;
+                    openTransactionModal('buy', symbol, name);
+                });
+            });
+        
+            document.querySelectorAll('.btn-sell').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const row = e.target.closest('tr');
+                    const symbol = row.cells[0].textContent;
+                    const name = row.cells[1].textContent;
+                    openTransactionModal('sell', symbol, name);
+                });
+            });
+        });
+
+        // Fonction pour ouvrir une modale de transaction (à implémenter)
+        function openTransactionModal(type, symbol, name) {
+            console.log(`Ouvrir modale pour ${type === 'buy' ? 'acheter' : 'vendre'} ${name} (${symbol})`);
+            // Ici vous ajouteriez le code pour ouvrir une modale avec un formulaire de transaction
+            alert(`${type === 'buy' ? 'Achat' : 'Vente'} de ${name} (${symbol})`);
+        }
+    </script>
+</body>
+</html>
